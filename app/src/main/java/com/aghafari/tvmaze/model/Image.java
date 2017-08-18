@@ -17,7 +17,15 @@ public class Image {
 		return original;
 	}
 
+	public void setOriginal(String original) {
+		this.original = original;
+	}
+
 	public String getMedium() {
 		return medium;
+	}
+
+	public void setMedium(String medium) {
+		this.medium = medium;
 	}
 }
