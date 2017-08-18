@@ -8,6 +8,85 @@ import java.util.List;
 
 @JsonObject
 public class Show {
+	public String getSummary() {
+		return summary;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public Links getLinks() {
+		return links;
+	}
+
+	public String getPremiered() {
+		return premiered;
+	}
+
+	public Rating getRating() {
+		return rating;
+	}
+
+	public int getRuntime() {
+		return runtime;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String getOfficialSite() {
+		return officialSite;
+	}
+
+	public Network getNetwork() {
+		return network;
+	}
+
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+	public WebChannel getWebChannel() {
+		return webChannel;
+	}
+
+	public List<String> getGenres() {
+		return genres;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public Externals getExternals() {
+		return externals;
+	}
+
+	public int getUpdated() {
+		return updated;
+	}
+
+	public String getStatus() {
+		return status;
+	}
 
 	@JsonField(name = "summary")
 	private String summary;

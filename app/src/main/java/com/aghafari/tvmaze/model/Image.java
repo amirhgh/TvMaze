@@ -12,4 +12,12 @@ public class Image {
 
 	@JsonField(name = "medium")
 	private String medium;
+
+	public String getOriginal() {
+		return original;
+	}
+
+	public String getMedium() {
+		return medium;
+	}
 }
