@@ -14,5 +14,9 @@ public class ImageLoader {
 	public static void loadCover(ImageView imageView, String url) {
 		Glide.with(imageView.getContext()).load(url).centerCrop().into(imageView);
 	}
+	@BindingAdapter("header")
+	public static void loadHeader(ImageView imageView, String url) {
+		Glide.with(imageView.getContext()).load(url).centerCrop().into(imageView);
+	}
 
 }

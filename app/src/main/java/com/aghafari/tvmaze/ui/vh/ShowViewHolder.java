@@ -20,7 +20,6 @@ public class ShowViewHolder extends RecyclerView.ViewHolder {
 	}
 
 	public void bindView(Show show) {
-		ShowViewModel vm = new ShowViewModel(show);
-		binding.setShow(vm);
+		binding.setShow(ShowViewModel.with(show));
 	}
 }
