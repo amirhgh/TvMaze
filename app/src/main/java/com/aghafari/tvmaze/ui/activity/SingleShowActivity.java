@@ -1,7 +1,11 @@
 package com.aghafari.tvmaze.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.aghafari.tvmaze.R;
 import com.aghafari.tvmaze.databinding.ActivitySingleShowBinding;
@@ -28,6 +32,13 @@ public class SingleShowActivity extends BaseActivity<ActivitySingleShowBinding> 
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContent(R.layout.activity_single_show);
+//		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+//			Window w = getWindow(); // in Activity's onCreate() for instance
+//			w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//			CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) mToolBar.getLayoutParams();
+//			lp.setMargins(0,24,0,0);
+//			mToolBar.setLayoutParams(lp);
+//		}
 		showId = getIntent().getIntExtra(SHOW_ID, -1);
 		if (showId == -1)
 			finish();
