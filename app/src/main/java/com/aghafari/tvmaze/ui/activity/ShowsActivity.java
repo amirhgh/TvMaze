@@ -8,6 +8,7 @@ import android.util.Log;
 import com.aghafari.tvmaze.R;
 import com.aghafari.tvmaze.databinding.ActivityShowsBinding;
 import com.aghafari.tvmaze.model.Show;
+import com.aghafari.tvmaze.network.Api;
 import com.aghafari.tvmaze.network.Router.ShowsRouter;
 import com.aghafari.tvmaze.ui.activity.base.BaseActivity;
 import com.aghafari.tvmaze.ui.adapter.ShowsListAdapter;
@@ -40,7 +41,7 @@ public class ShowsActivity extends BaseActivity<ActivityShowsBinding> {
 		binding.list.setLayoutManager(layout);
 		binding.list.setAdapter(showsListAdapter);
 
-		provideRetrofit().create(ShowsRouter.class).listShows(0)
+		Api.getInstance(getString(R.string.base_url)).create(ShowsRouter.class).listShows(0)
 				.map(new Function<String, List<Show>>() {
 					@Override
 					public List<Show> apply(@NonNull String s) throws Exception {

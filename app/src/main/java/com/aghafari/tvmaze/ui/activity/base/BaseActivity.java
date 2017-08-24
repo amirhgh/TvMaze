@@ -44,21 +44,6 @@ public abstract class BaseActivity<BINDER extends ViewDataBinding> extends AppCo
 		super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
 	}
 
-	protected Retrofit provideRetrofit() {
-		OkHttpClient client = new OkHttpClient.Builder().addNetworkInterceptor(new Interceptor() {
-			@Override
-			public Response intercept(Chain chain) throws IOException {
-				Request.Builder builder = chain.request().newBuilder();
-				return chain.proceed(builder.build());
-			}
-		}).build();
-		return new Retrofit.Builder().baseUrl(getString(R.string.base_url))
-				.client(client)
-				.addConverterFactory(ScalarsConverterFactory.create())
-				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-				.build();
-	}
-
 	@Override
 	protected void onPause() {
 		super.onPause();

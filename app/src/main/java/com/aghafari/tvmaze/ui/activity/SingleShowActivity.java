@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import com.aghafari.tvmaze.R;
 import com.aghafari.tvmaze.databinding.ActivitySingleShowBinding;
 import com.aghafari.tvmaze.model.Show;
+import com.aghafari.tvmaze.network.Api;
 import com.aghafari.tvmaze.network.Router.ShowsRouter;
 import com.aghafari.tvmaze.ui.activity.base.BaseActivity;
 import com.aghafari.tvmaze.vm.ShowViewModel;
@@ -42,7 +43,7 @@ public class SingleShowActivity extends BaseActivity<ActivitySingleShowBinding> 
 		showId = getIntent().getIntExtra(SHOW_ID, -1);
 		if (showId == -1)
 			finish();
-		provideRetrofit().create(ShowsRouter.class).singleShow(showId).map(new Function<String, Show>() {
+		Api.getInstance(getString(R.string.base_url)).create(ShowsRouter.class).singleShow(showId).map(new Function<String, Show>() {
 			@Override
 			public Show apply(String s) throws Exception {
 				return LoganSquare.parse(s, Show.class);

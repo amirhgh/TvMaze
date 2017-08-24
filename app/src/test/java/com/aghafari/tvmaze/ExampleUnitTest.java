@@ -2,6 +2,8 @@ package com.aghafari.tvmaze;
 
 import org.junit.Test;
 
+import retrofit2.Retrofit;
+
 import static org.junit.Assert.*;
 
 /**
