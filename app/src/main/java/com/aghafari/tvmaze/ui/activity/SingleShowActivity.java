@@ -11,12 +11,14 @@ import com.aghafari.tvmaze.R;
 import com.aghafari.tvmaze.databinding.ActivitySingleShowBinding;
 import com.aghafari.tvmaze.model.Show;
 import com.aghafari.tvmaze.network.Api;
+import com.aghafari.tvmaze.network.ErrorHandler;
 import com.aghafari.tvmaze.network.Router.ShowsRouter;
 import com.aghafari.tvmaze.ui.activity.base.BaseActivity;
 import com.aghafari.tvmaze.vm.ShowViewModel;
 import com.bluelinelabs.logansquare.LoganSquare;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -28,22 +30,16 @@ import io.reactivex.schedulers.Schedulers;
 public class SingleShowActivity extends BaseActivity<ActivitySingleShowBinding> {
 	public static final String SHOW_ID = "show_id";
 	private int showId;
+	private Disposable subscribe;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContent(R.layout.activity_single_show);
-//		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-//			Window w = getWindow(); // in Activity's onCreate() for instance
-//			w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//			CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) mToolBar.getLayoutParams();
-//			lp.setMargins(0,24,0,0);
-//			mToolBar.setLayoutParams(lp);
-//		}
 		showId = getIntent().getIntExtra(SHOW_ID, -1);
 		if (showId == -1)
 			finish();
-		Api.getInstance(getString(R.string.base_url)).create(ShowsRouter.class).singleShow(showId).map(new Function<String, Show>() {
+		subscribe = Api.getInstance(getString(R.string.base_url)).create(ShowsRouter.class).singleShow(showId).map(new Function<String, Show>() {
 			@Override
 			public Show apply(String s) throws Exception {
 				return LoganSquare.parse(s, Show.class);
@@ -54,7 +50,14 @@ public class SingleShowActivity extends BaseActivity<ActivitySingleShowBinding> 
 					public void accept(Show show) throws Exception {
 						binding.setShow(ShowViewModel.with(show));
 					}
-				});
-//		binding.setShow();
+				},new ErrorHandler(binding.getRoot()));
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (subscribe != null) {
+			subscribe.dispose();
+		}
 	}
 }
