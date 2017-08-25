@@ -25,6 +25,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -58,13 +59,13 @@ public class ShowsActivity extends BaseActivity<ActivityShowsBinding> {
 				}
 				return page;
 			}
-		}), RxSwipeRefreshLayout.refreshes(binding.refresh).map(new Function<Object, Integer>() {
+		}).distinctUntilChanged(), RxSwipeRefreshLayout.refreshes(binding.refresh).map(new Function<Object, Integer>() {
 			@Override
 			public Integer apply(@NonNull Object o) throws Exception {
 				page = 0;
 				return page;
 			}
-		})).distinctUntilChanged().flatMap(new Function<Integer, ObservableSource<List<Show>>>() {
+		}), Observable.just(page)).flatMap(new Function<Integer, ObservableSource<List<Show>>>() {
 			@Override
 			public ObservableSource<List<Show>> apply(@NonNull Integer integer) throws Exception {
 				return Api.getInstance(getString(R.string.base_url)).create(ShowsRouter.class).listShows(integer)
@@ -73,7 +74,12 @@ public class ShowsActivity extends BaseActivity<ActivityShowsBinding> {
 							public List<Show> apply(@NonNull String s) throws Exception {
 								return LoganSquare.parseList(s, Show.class);
 							}
-						}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+						}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doFinally(new Action() {
+							@Override
+							public void run() throws Exception {
+								binding.refresh.setRefreshing(false);
+							}
+						});
 			}
 		}).subscribe(new Consumer<List<Show>>() {
 			@Override
@@ -98,7 +104,7 @@ public class ShowsActivity extends BaseActivity<ActivityShowsBinding> {
 	protected void onResume() {
 		super.onResume();
 		try {
-			RxSwipeRefreshLayout.refreshing(binding.refresh).accept(true);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
